@@ -8,7 +8,13 @@ import { Label } from "./ui/label";
 const WhatsAppButton = () => {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: "", phone: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    iniciante: "",
+    dispostoInvestir: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +40,13 @@ const WhatsAppButton = () => {
       window.open(`https://wa.me/5514996671196?text=${text}`, "_blank");
       
       // Reset and close
-      setFormData({ name: "", phone: "" });
+      setFormData({
+        name: "",
+        email: "",
+        whatsapp: "",
+        iniciante: "",
+        dispostoInvestir: "",
+      });
       setOpen(false);
       setIsSubmitting(false);
     }
@@ -54,7 +66,7 @@ const WhatsAppButton = () => {
           <MessageCircle className="w-6 h-6 text-primary-foreground relative z-10" fill="currentColor" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4 mb-4 mr-4 bg-background border rounded-lg shadow-xl" align="end" side="top">
+      <PopoverContent className="w-[340px] p-4 mb-4 mr-4 bg-background border rounded-lg shadow-xl max-h-[80vh] overflow-y-auto" align="end" side="top">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-medium text-lg">Fale Conosco</h3>
           <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setOpen(false)}>
@@ -62,8 +74,9 @@ const WhatsAppButton = () => {
           </Button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Nome */}
           <div className="space-y-2">
-            <Label htmlFor="wa-name">Nome</Label>
+            <Label htmlFor="wa-name">Nome *</Label>
             <Input
               id="wa-name"
               placeholder="Seu nome"
@@ -72,17 +85,66 @@ const WhatsAppButton = () => {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
+
+          {/* E-mail */}
           <div className="space-y-2">
-            <Label htmlFor="wa-phone">Telefone</Label>
+            <Label htmlFor="wa-email">E-mail *</Label>
             <Input
-              id="wa-phone"
+              id="wa-email"
+              type="email"
+              placeholder="seu@email.com"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+          </div>
+
+          {/* WhatsApp (abaixo do e-mail) */}
+          <div className="space-y-2">
+            <Label htmlFor="wa-whatsapp">WhatsApp *</Label>
+            <Input
+              id="wa-whatsapp"
               type="tel"
               placeholder="(00) 00000-0000"
               required
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              value={formData.whatsapp}
+              onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
             />
           </div>
+
+
+          {/* Iniciante no francês */}
+          <div className="space-y-2">
+            <Label htmlFor="wa-iniciante">Você é iniciante no francês? *</Label>
+            <select
+              id="wa-iniciante"
+              required
+              value={formData.iniciante}
+              onChange={(e) => setFormData({ ...formData, iniciante: e.target.value })}
+              className="w-full px-3 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors"
+            >
+              <option value="">Selecione</option>
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+
+          {/* Disposto a investir */}
+          <div className="space-y-2">
+            <Label htmlFor="wa-investir">Você estaria disposto(a) a investir até R$ 320,00/mês, em um curso de francês de altíssima qualidade? *</Label>
+            <select
+              id="wa-investir"
+              required
+              value={formData.dispostoInvestir}
+              onChange={(e) => setFormData({ ...formData, dispostoInvestir: e.target.value })}
+              className="w-full px-3 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors"
+            >
+              <option value="">Selecione</option>
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+
           <Button type="submit" className="w-full bg-[hsl(142,70%,40%)] hover:bg-[hsl(142,70%,30%)]" disabled={isSubmitting}>
             {isSubmitting ? "Iniciando..." : "Iniciar Conversa"}
           </Button>
